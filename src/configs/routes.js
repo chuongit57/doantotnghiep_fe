@@ -1,0 +1,17 @@
+export const ROUTER_NAME = {
+  HOME: '/',
+  HOME_SIGNIN: '/signin',
+  HOME_SIGNUP: '/signup',
+  HOME_SIGNOUT: '/signout',
+  HOME_SHOPPING_CART: '/cart',
+  HOME_PRODUCTS: '/products',
+  HOME_CONTACT: '/contact',
+  HOME_ABOUT: '/about-us',
+  ADMIN_HOME: '/admin',
+  ADMIN_SIGNIN: '/admin/signin',
+  ADMIN_SIGNUP: '/admin/signup',
+  ADMIN_SIGNOUT: '/admin/signout',
+  ADMIN_CATEGORIES: '/admin/categories',
+  ADMIN_PRODUCTS: '/admin/products',
+  ADMIN_USERS: '/admin/users',
+}
