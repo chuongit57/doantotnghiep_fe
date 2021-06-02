@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {Box, Typography} from '@material-ui/core'
 import MultiCarousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import {useProducts} from '../../../../hooks/products'
 import ProductItem from '../../../../components/ProductItem'
+import {useCategories} from '../../../../hooks/category'
 
 const responsive = {
   desktop: {
@@ -42,37 +43,50 @@ const useStyles = makeStyles({
 const ProductItems = () => {
   const classes = useStyles()
   const products = useProducts()
+  const categories = useCategories()
+
   return (
     <>
-      <Box mb={2}>
-        <Typography variant="h6">New Products</Typography>
-      </Box>
-      <MultiCarousel
-        itemClass={classes.item}
-        additionalTransfrom={0}
-        arrows
-        autoPlaySpeed={3000}
-        centerMode={false}
-        className=""
-        containerClass="container-with-dots"
-        dotListClass=""
-        draggable
-        focusOnSelect={false}
-        infinite
-        keyBoardControl
-        minimumTouchDrag={80}
-        renderButtonGroupOutside={false}
-        renderDotsOutside={false}
-        responsive={responsive}
-        showDots={false}
-        sliderClass=""
-        slidesToSlide={1}
-        swipeable
-      >
-        {products.slice(0, 10).map((item) => (
-          <ProductItem key={item.id} fullWidth item={item} />
-        ))}
-      </MultiCarousel>
+      {categories
+        .filter((category) => products.some((product) => product.category_id === category.id))
+        .map((category) => {
+          return (
+            <Fragment key={category.id}>
+              <Box mb={2}>
+                <Typography variant="h6">{category.category_name}</Typography>
+              </Box>
+              <MultiCarousel
+                itemClass={classes.item}
+                additionalTransfrom={0}
+                arrows
+                autoPlaySpeed={3000}
+                centerMode={false}
+                className=""
+                containerClass="container-with-dots"
+                dotListClass=""
+                draggable
+                focusOnSelect={false}
+                infinite
+                keyBoardControl
+                minimumTouchDrag={80}
+                renderButtonGroupOutside={false}
+                renderDotsOutside={false}
+                responsive={responsive}
+                showDots={false}
+                sliderClass=""
+                slidesToSlide={1}
+                swipeable
+              >
+                {products
+                  .filter((product) => product.category_id === category.id)
+                  .slice(0, 10)
+                  .map((product) => (
+                    <ProductItem key={product.id} fullWidth item={product} />
+                  ))}
+              </MultiCarousel>
+            </Fragment>
+          )
+        })}
     </>
   )
 }

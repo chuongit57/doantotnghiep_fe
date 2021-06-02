@@ -3,7 +3,7 @@ import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {categorySagaActions} from '../stores/actionTypes'
 
-export const useCategory = () => {
+export const useCategories = () => {
   return useSelector((state) => state.category.data)
 }
 

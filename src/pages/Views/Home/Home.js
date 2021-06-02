@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Template from '../components/Template'
 import {Box, Container} from '@material-ui/core'
 import Slider from './components/Slider'
-import NewProductItems from './components/NewProductItems'
+// import NewProductItems from './components/NewProductItems'
 import ProductItems from './components/ProductItems'
 import {Switch, Route} from 'react-router-dom'
 import {ROUTER_NAME} from '../../../configs'
@@ -11,15 +11,17 @@ import ShoppingCart from '../ShoppingCart/ShoppingCart'
 import {Contact} from '../Contact'
 import {AboutUs} from '../AboutUs'
 import SignInPage from '../SignIn'
+import {useOnLoadAPIProducts} from '../../../hooks/products'
+import {useOnLoadAPICategories} from '../../../hooks/category'
 
 const HOME = () => (
   <Container>
     <Box mb={3}>
       <Slider />
     </Box>
-    <Box mb={3}>
+    {/* <Box mb={3}>
       <NewProductItems />
-    </Box>
+    </Box> */}
     <Box mb={3}>
       <ProductItems />
     </Box>
@@ -27,11 +29,12 @@ const HOME = () => (
 )
 
 const HomePage = () => {
-  // const loadProducts = useloadProducts()
-
-  // useEffect(() => {
-  //   loadProducts()
-  // }, [])
+  const onLoadProducts = useOnLoadAPIProducts()
+  const onLoadAPICategories = useOnLoadAPICategories()
+  useEffect(() => {
+    onLoadProducts()
+    onLoadAPICategories()
+  }, [])
 
   return (
     <Template>

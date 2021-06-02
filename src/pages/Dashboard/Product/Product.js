@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, {useEffect} from 'react'
 import {makeStyles} from '@material-ui/core/styles'

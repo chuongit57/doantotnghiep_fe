@@ -19,7 +19,7 @@ function* addCategorySaga(action) {
 function* loadCategorySaga() {
   try {
     yield put(start())
-    const response = yield call(Api.get, 'api/admin/category')
+    const response = yield call(Api.get, 'api/category')
     yield put(loadCategory(response.data.result))
     yield put(success())
   } catch (e) {

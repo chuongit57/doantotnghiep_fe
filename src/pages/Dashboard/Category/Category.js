@@ -15,7 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import {Button, Grid, IconButton} from '@material-ui/core'
 import Form from './components/Form'
 import Template from '../components/Template'
-import {useCategory, useOnDeleteAPICategory, useOnLoadAPICategories} from '../../../hooks/category'
+import {useCategories, useOnDeleteAPICategory, useOnLoadAPICategories} from '../../../hooks/category'
 import {confirmAlert} from 'react-confirm-alert' // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
@@ -40,7 +40,7 @@ const Category = () => {
   const [openForm, setOpenForm] = React.useState(false)
   const onLoadAPICategories = useOnLoadAPICategories()
   const onDeleteAPICategory = useOnDeleteAPICategory()
-  const categories = useCategory()
+  const categories = useCategories()
 
   useEffect(() => {
     onLoadAPICategories()
