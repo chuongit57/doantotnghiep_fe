@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import Template from '../components/Template'
 import {Box, Container} from '@material-ui/core'
 import Slider from './components/Slider'
 import NewProductItems from './components/NewProductItems'
 import ProductItems from './components/ProductItems'
-import {useloadProducts} from '../../../hooks/products'
 import {Switch, Route} from 'react-router-dom'
 import {ROUTER_NAME} from '../../../configs'
 import Products from '../Products/Products'
@@ -28,11 +27,11 @@ const HOME = () => (
 )
 
 const HomePage = () => {
-  const loadProducts = useloadProducts()
+  // const loadProducts = useloadProducts()
 
-  useEffect(() => {
-    loadProducts()
-  }, [])
+  // useEffect(() => {
+  //   loadProducts()
+  // }, [])
 
   return (
     <Template>

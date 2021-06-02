@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
 import {DropzoneDialog} from 'material-ui-dropzone'
@@ -5,11 +6,13 @@ import Button from '@material-ui/core/Button'
 import {head, isEmpty} from 'lodash'
 import {makeStyles} from '@material-ui/core/styles'
 import clsx from 'clsx'
+import {useOnEditEProduct} from '../hooks/editProduct'
 
-const ImageUploader = React.memo(() => {
+const ImageUploader = React.memo((props) => {
+  const {name, onChange, value} = props
   const classes = useClass()
-  const itemEditorUpload = 'useCreateImageOfItemIE()'
-  const imageFile = 'useImageFileIE()'
+  // const onEditEProduct = useOnEditEProduct()
+  const imageFile = null
   const [open, setOpen] = React.useState(false)
   const onOpen = React.useCallback(() => {
     setOpen(true)
@@ -17,27 +20,26 @@ const ImageUploader = React.memo(() => {
   const onClose = React.useCallback(() => {
     setOpen(false)
   }, [])
-  const onSave = React.useCallback(
-    (files) => {
-      const file = head(files)
-      if (file) {
-        itemEditorUpload(file)
-        setOpen(false)
-      }
-    },
-    [itemEditorUpload],
-  )
+  const onSave = React.useCallback((files) => {
+    const file = head(files)
+    if (file) {
+      onChange(name, file)
+      setOpen(false)
+    }
+  }, [])
+
   const acceptedFiles = React.useMemo(() => {
     return ['image/jpeg', 'image/png', 'image/bmp']
   }, [])
+
   const imageSource = React.useMemo(() => {
-    if (imageFile) {
-      return 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
-      //   URL.createObjectURL(imageFile)
+    if (value) {
+      return URL.createObjectURL(value)
     }
     return null
-  }, [imageFile])
-  const imageUrl = 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg' //'useImageUrlIE()'
+  }, [value])
+
+  const imageUrl = null
   const renderImageUrl = isEmpty(imageUrl) ? imageSource : imageUrl
   let contentView
   if (renderImageUrl) {

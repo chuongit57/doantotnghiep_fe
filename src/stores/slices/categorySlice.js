@@ -10,7 +10,10 @@ export const categorySlice = createSlice({
       state.data = action.payload
     },
     deleteCategory: (state, action) => {
-      state.data.filter((item) => item.id !== action.payload)
+      return {
+        ...state,
+        data: state.data.filter((item) => item.id !== action.payload),
+      }
     },
     addCategory: (state, action) => {
       state.data = [...state.data, action.payload]

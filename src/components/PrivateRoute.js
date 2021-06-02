@@ -1,13 +1,10 @@
 import React from 'react'
 import {Route, Redirect} from 'react-router-dom'
-// import {useUser} from '../hooks/user'
-import {getToken} from '../utils/localStorages'
 import {ROUTER_NAME} from '../configs'
+import {getToken} from '../utils/localStorages'
 
 const PrivateRoute = (props) => {
-  // const user = useUser()
-  const user = {token: getToken()}
-  return user.token ? (
+  return getToken('TOKEN') ? (
     <Route {...props} />
   ) : (
     <Redirect

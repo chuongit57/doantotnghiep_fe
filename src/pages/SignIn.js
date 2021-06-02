@@ -15,9 +15,11 @@ import {
   //Link,
   useHistory,
 } from 'react-router-dom'
-import {setToken} from '../utils/localStorages'
 import {ROUTER_NAME} from '../configs/routes'
 import Copyright from '../components/Copyright'
+import {useOnAPISignIn} from '../hooks/user'
+import {useFormik} from 'formik'
+import * as yup from 'yup'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,13 +41,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const validationSchema = yup.object({
+  email: yup.string('Enter your email').required('Email is required'),
+  password: yup.string('Enter your password').required('Password is required'),
+})
+
 const SignInPage = () => {
   const history = useHistory()
   const classes = useStyles()
+  const onAPISignIn = useOnAPISignIn()
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      onAPISignIn(values, () => {
+        history.push(ROUTER_NAME.ADMIN_HOME)
+      })
+    },
+  })
 
   const handleSubmit = () => {
-    history.push(ROUTER_NAME.ADMIN_HOME)
-    setToken(true)
+    formik.handleSubmit()
   }
 
   return (
@@ -59,10 +79,36 @@ const SignInPage = () => {
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
-          <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
-          <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+          <TextField
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Email Address"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+          />
           {/* <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" /> */}
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleSubmit}>
+          <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleSubmit}>
             Sign In
           </Button>
           {/* <Grid container>

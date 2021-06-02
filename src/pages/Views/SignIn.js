@@ -18,6 +18,7 @@ import {
 import {ROUTER_NAME} from '../../configs'
 import {setToken} from '../../utils/localStorages'
 import Copyright from '../../components/Copyright'
+import {useOnAPISignIn} from '../../hooks/user'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,10 +43,14 @@ const useStyles = makeStyles((theme) => ({
 const SignInPage = () => {
   const history = useHistory()
   const classes = useStyles()
+  const onAPISignIn = useOnAPISignIn()
 
   const handleSubmit = () => {
-    history.push(ROUTER_NAME.HOME)
-    setToken(true)
+    onAPISignIn({email: 'admin', password: '1234'})
+    if (2 == 4) {
+      history.push(ROUTER_NAME.HOME)
+      setToken(true)
+    }
   }
 
   return (
@@ -62,7 +67,7 @@ const SignInPage = () => {
           <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
           <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
           {/* <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" /> */}
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleSubmit}>
+          <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleSubmit}>
             Sign In
           </Button>
           {/* <Grid container>

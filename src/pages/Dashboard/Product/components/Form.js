@@ -1,42 +1,60 @@
-import React from 'react'
+/* eslint-disable no-unused-vars */
+import React, {useEffect} from 'react'
 import {Box, Grid, TextField} from '@material-ui/core'
 import {useFormik} from 'formik'
 import * as yup from 'yup'
 import DialogTemplate from '../../../../components/Dialog'
 import ImageUploader from '../../../../components/ImageUploader'
+import {useOnAddAPIProduct} from '../../../../hooks/products'
 
 const validationSchema = yup.object({
-  name: yup.string('Enter your email').email('Enter a valid email').required('Email is required'),
-  parentId: yup.string('Enter your password').min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
+  product_code: yup.string('Enter your code').required('code is required'),
+  product_name: yup.string('Enter your name').required('name is required'),
+  category_id: yup.string('Enter your category').required('category is required'),
 })
 
 const Form = (props) => {
   const {open, onClose, onSubmit} = props
+  const onAddAPIProduct = useOnAddAPIProduct()
 
   const formik = useFormik({
     initialValues: {
-      name: 'foobar@example.com',
-      parentId: 'foobar',
-      sortOrder: 1,
-      status: '',
+      image: null,
+      product_code: '',
+      product_name: '',
+      category_id: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
-      onSubmit()
+    onSubmit: (values, {resetForm}) => {
+      const params = {
+        productImage: values.image,
+        productCode: values.product_code,
+        productName: values.product_name,
+        categoryId: values.category_id,
+      }
+      onAddAPIProduct(params)
+      // onSubmit()
+      resetForm()
     },
   })
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log('???')
+  //     formik.setFieldValue('category_id', 15)
+  //   }, 10000)
+  // }, [])
 
   const handleSubmit = () => {
     formik.handleSubmit()
   }
 
   return (
-    <DialogTemplate open={open} onClose={onClose} onSubmit={handleSubmit} title="Hello">
+    <DialogTemplate open={open} onClose={onClose} onSubmit={handleSubmit} title="Create">
       <Grid container spacing={1}>
         <Grid item>
           <Box style={{width: 150, height: 200, alignItems: 'center', justifyContent: 'center'}} border={1} borderColor={'black'}>
-            <ImageUploader />
+            <ImageUploader name="image" value={formik.values.image} onChange={formik.setFieldValue} />
           </Box>
         </Grid>
         <Grid item>
@@ -45,26 +63,26 @@ const Form = (props) => {
               <Grid container spacing={1}>
                 <Grid item>
                   <TextField
-                    id="name"
-                    label="Name"
+                    id="product_code"
+                    label="Code"
                     variant="outlined"
-                    name="name"
-                    value={formik.values.name}
+                    name="product_code"
+                    value={formik.values.product_code}
                     onChange={formik.handleChange}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
+                    error={formik.touched.product_code && Boolean(formik.errors.product_code)}
+                    helperText={formik.touched.product_code && formik.errors.product_code}
                   />
                 </Grid>
                 <Grid item>
                   <TextField
-                    id="outlined-basic"
-                    label="Parent"
+                    id="product_name"
+                    label="Name"
                     variant="outlined"
-                    name="parentId"
-                    value={formik.values.parentId}
+                    name="product_name"
+                    value={formik.values.product_name}
                     onChange={formik.handleChange}
-                    error={formik.touched.parentId && Boolean(formik.errors.parentId)}
-                    helperText={formik.touched.parentId && formik.errors.parentId}
+                    error={formik.touched.product_name && Boolean(formik.errors.product_name)}
+                    helperText={formik.touched.product_name && formik.errors.product_name}
                   />
                 </Grid>
               </Grid>
@@ -73,26 +91,14 @@ const Form = (props) => {
               <Grid container spacing={1}>
                 <Grid item>
                   <TextField
-                    id="sortOrder"
-                    label="Sort Order"
+                    id="category_id"
+                    label="Category Id"
                     variant="outlined"
-                    name="sortOrder"
-                    value={formik.values.sortOrder}
+                    name="category_id"
+                    value={formik.values.category_id}
                     onChange={formik.handleChange}
-                    error={formik.touched.sortOrder && Boolean(formik.errors.sortOrder)}
-                    helperText={formik.touched.sortOrder && formik.errors.sortOrder}
-                  />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id="status"
-                    label="Status"
-                    variant="outlined"
-                    name="status"
-                    value={formik.values.status}
-                    onChange={formik.handleChange}
-                    error={formik.touched.status && Boolean(formik.errors.status)}
-                    helperText={formik.touched.status && formik.errors.status}
+                    error={formik.touched.category_id && Boolean(formik.errors.category_id)}
+                    helperText={formik.touched.category_id && formik.errors.category_id}
                   />
                 </Grid>
               </Grid>

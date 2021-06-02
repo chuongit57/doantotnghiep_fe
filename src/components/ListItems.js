@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -38,13 +39,13 @@ export const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Products" />
       </ListItem>
-      <ListItem button onClick={handleNavigation.bind(this, ROUTER_NAME.ADMIN_USERS)}>
+      {/* <ListItem button onClick={handleNavigation.bind(this, ROUTER_NAME.ADMIN_USERS)}>
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText primary="Users" />
-      </ListItem>
-      <ListItem button>
+      </ListItem> */}
+      {/* <ListItem button>
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
@@ -55,7 +56,7 @@ export const MainListItems = () => {
           <LayersIcon />
         </ListItemIcon>
         <ListItemText primary="Integrations" />
-      </ListItem>
+      </ListItem> */}
     </div>
   )
 }

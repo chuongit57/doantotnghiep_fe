@@ -16,7 +16,7 @@ Api.interceptors.request.use(
     // Do something before request is sent
     const token = getToken()
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.accessToken = `${token}`
     }
     return config
   },

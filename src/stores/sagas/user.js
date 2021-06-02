@@ -1,13 +1,21 @@
 import {call, put, takeEvery} from 'redux-saga/effects'
-import Api from '...'
+import Api from '../../services'
+import {setToken} from '../../utils/localStorages'
+import {userSagaActions} from '../actionTypes'
+import {start, fail, success} from '../slices/loadingSlice'
+import {loadUser} from '../slices/userSlice'
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* fetchUser(action) {
+function* signIn(action) {
   try {
-    const user = yield call(Api.fetchUser, action.payload.userId)
-    yield put({type: 'USER_FETCH_SUCCEEDED', user: user})
+    yield put(start())
+    const response = yield call(Api.post, 'api/admin/login', action.payload.data)
+    yield put(loadUser(response.data.result))
+    yield call(setToken, response.data.result.accessToken)
+    action.payload.callBack && action.payload.callBack()
+    yield put(success())
   } catch (e) {
-    yield put({type: 'USER_FETCH_FAILED', message: e.message})
+    yield put(fail())
   }
 }
 
@@ -16,7 +24,7 @@ function* fetchUser(action) {
   Allows concurrent fetches of user.
 */
 function* userSaga() {
-  yield takeEvery('USER_FETCH_REQUESTED', fetchUser)
+  yield takeEvery(userSagaActions.SIGN_IN, signIn)
 }
 
 export default userSaga

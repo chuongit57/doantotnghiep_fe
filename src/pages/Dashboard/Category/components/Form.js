@@ -1,28 +1,30 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import {Grid, TextField} from '@material-ui/core'
 import {useFormik} from 'formik'
 import * as yup from 'yup'
 import DialogTemplate from '../../../../components/Dialog'
+import {useOnAddAPICategory} from '../../../../hooks/category'
 
 const validationSchema = yup.object({
-  name: yup.string('Enter your email').email('Enter a valid email').required('Email is required'),
-  parentId: yup.string('Enter your password').min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
+  categoryCode: yup.string("Enter your category's code").required('Code is required'),
+  categoryName: yup.string("Enter your category's categoryName").required('Name is required'),
 })
 
 const Form = (props) => {
-  const {open, onClose, onSubmit} = props
-
+  const {open, onClose, onSubmit, title} = props
+  const onAddAPICategory = useOnAddAPICategory()
   const formik = useFormik({
     initialValues: {
-      name: 'foobar@example.com',
-      parentId: 'foobar',
-      sortOrder: 1,
-      status: '',
+      categoryCode: '',
+      categoryName: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
-      onSubmit()
+    onSubmit: (values, {resetForm}) => {
+      onAddAPICategory(values, () => {
+        onClose()
+        resetForm()
+      })
     },
   })
 
@@ -31,65 +33,34 @@ const Form = (props) => {
   }
 
   return (
-    <DialogTemplate open={open} onClose={onClose} onSubmit={handleSubmit} title="Hello">
+    <DialogTemplate open={open} onClose={onClose} onSubmit={handleSubmit} title="Create">
       <Grid container spacing={1}>
-        <Grid item>
-          <div style={{width: 150, height: 200, background: 'red'}}></div>
-        </Grid>
         <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
               <Grid container spacing={1}>
                 <Grid item>
                   <TextField
-                    id="name"
+                    id="categoryCode"
+                    label="Code"
+                    variant="outlined"
+                    name="categoryCode"
+                    value={formik.values.categoryCode}
+                    onChange={formik.handleChange}
+                    error={formik.touched.categoryCode && Boolean(formik.errors.categoryCode)}
+                    helperText={formik.touched.categoryCode && formik.errors.categoryCode}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id="categoryName"
                     label="Name"
                     variant="outlined"
-                    name="name"
-                    value={formik.values.name}
+                    name="categoryName"
+                    value={formik.values.categoryName}
                     onChange={formik.handleChange}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
-                  />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id="outlined-basic"
-                    label="Parent"
-                    variant="outlined"
-                    name="parentId"
-                    value={formik.values.parentId}
-                    onChange={formik.handleChange}
-                    error={formik.touched.parentId && Boolean(formik.errors.parentId)}
-                    helperText={formik.touched.parentId && formik.errors.parentId}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Grid container spacing={1}>
-                <Grid item>
-                  <TextField
-                    id="sortOrder"
-                    label="Sort Order"
-                    variant="outlined"
-                    name="sortOrder"
-                    value={formik.values.sortOrder}
-                    onChange={formik.handleChange}
-                    error={formik.touched.sortOrder && Boolean(formik.errors.sortOrder)}
-                    helperText={formik.touched.sortOrder && formik.errors.sortOrder}
-                  />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id="status"
-                    label="Status"
-                    variant="outlined"
-                    name="status"
-                    value={formik.values.status}
-                    onChange={formik.handleChange}
-                    error={formik.touched.status && Boolean(formik.errors.status)}
-                    helperText={formik.touched.status && formik.errors.status}
+                    error={formik.touched.categoryName && Boolean(formik.errors.categoryName)}
+                    helperText={formik.touched.categoryName && formik.errors.categoryName}
                   />
                 </Grid>
               </Grid>
