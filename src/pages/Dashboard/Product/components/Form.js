@@ -11,6 +11,7 @@ const validationSchema = yup.object({
   product_code: yup.string('Enter your code').required('code is required'),
   product_name: yup.string('Enter your name').required('name is required'),
   category_id: yup.string('Enter your category').required('category is required'),
+  price: yup.string('Enter your price').required('price is required'),
 })
 
 const Form = (props) => {
@@ -23,6 +24,7 @@ const Form = (props) => {
       product_code: '',
       product_name: '',
       category_id: '',
+      price: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values, {resetForm}) => {
@@ -31,6 +33,7 @@ const Form = (props) => {
         productCode: values.product_code,
         productName: values.product_name,
         categoryId: values.category_id,
+        price: values.price,
       }
       onAddAPIProduct(params)
       // onSubmit()
@@ -99,6 +102,18 @@ const Form = (props) => {
                     onChange={formik.handleChange}
                     error={formik.touched.category_id && Boolean(formik.errors.category_id)}
                     helperText={formik.touched.category_id && formik.errors.category_id}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id="price"
+                    label="Price"
+                    variant="outlined"
+                    name="price"
+                    value={formik.values.price}
+                    onChange={formik.handleChange}
+                    error={formik.touched.price && Boolean(formik.errors.price)}
+                    helperText={formik.touched.price && formik.errors.price}
                   />
                 </Grid>
               </Grid>
