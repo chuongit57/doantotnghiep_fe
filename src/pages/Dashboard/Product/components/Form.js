@@ -35,9 +35,9 @@ const Form = (props) => {
         categoryId: values.category_id,
         price: values.price,
       }
-      onAddAPIProduct(params)
-      // onSubmit()
-      resetForm()
+      onAddAPIProduct(params, () => {
+        handleClose()
+      })
     },
   })
 
@@ -50,6 +50,11 @@ const Form = (props) => {
 
   const handleSubmit = () => {
     formik.handleSubmit()
+  }
+
+  const handleClose = () => {
+    formik.resetForm()
+    onClose()
   }
 
   return (

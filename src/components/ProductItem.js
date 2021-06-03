@@ -31,7 +31,7 @@ const ProductItem = (props) => {
       <CardActionArea>
         <CardMedia className={classes.media} image={item.image} title="Contemplative Reptile" />
         <CardContent>
-          <Typography ariant="body2">{item.name}</Typography>
+          <Typography ariant="body2">{item.product_name}</Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {convertVND(item.price)}
           </Typography>

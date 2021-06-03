@@ -7,12 +7,13 @@ import {addProduct, deleteProduct, loadProducts} from '../slices/productSlice'
 function* addProductSaga(action) {
   try {
     yield put(start())
-    const {productImage, productCode, productName, categoryId} = action.payload.data
+    const {productImage, productCode, productName, categoryId, price} = action.payload.data
     let formData = new FormData() // instantiate it
     if (productImage) formData.set('productImage', productImage)
     formData.set('productCode', productCode)
     formData.set('productName', productName)
     formData.set('categoryId', categoryId)
+    formData.set('price', price)
     const response = yield call(Api.post, '/api/admin/product', formData, {
       headers: {
         'content-type': 'multipart/form-data', // do not forget this
