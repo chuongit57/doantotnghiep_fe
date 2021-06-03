@@ -5,7 +5,7 @@ export const eCategorySlice = createSlice({
   initialState: {},
   reducers: {
     loadECategory: (state, action) => {
-      state = action.payload
+      return {...state, ...action.payload}
     },
     editECategory: (state, action) => {
       state[action.payload.name] = action.payload.value

@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Grid, TextField} from '@material-ui/core'
 import {useFormik} from 'formik'
 import * as yup from 'yup'
 import DialogTemplate from '../../../../components/Dialog'
-import {useOnAddAPICategory} from '../../../../hooks/category'
+import {useOnAddAPICategory, useOnEditAPICategory} from '../../../../hooks/category'
+import {useECategory} from '../../../../hooks/editCategory'
+import {isEmpty} from '../../../../utils'
 
 const validationSchema = yup.object({
   categoryCode: yup.string("Enter your category's code").required('Code is required'),
@@ -13,27 +15,58 @@ const validationSchema = yup.object({
 
 const Form = (props) => {
   const {open, onClose, onSubmit, title} = props
+  const [isEdit, setIsEdit] = useState(false)
   const onAddAPICategory = useOnAddAPICategory()
+  const onEditAPICategory = useOnEditAPICategory()
+  const eCategory = useECategory()
+
   const formik = useFormik({
     initialValues: {
       categoryCode: '',
       categoryName: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values, {resetForm}) => {
-      onAddAPICategory(values, () => {
-        onClose()
-        resetForm()
-      })
+    onSubmit: (values) => {
+      if (isEdit) {
+        onEditAPICategory(
+          {
+            id: eCategory.id,
+            ...values,
+          },
+          () => {
+            handleClose()
+          },
+        )
+      } else {
+        onAddAPICategory(values, () => {
+          handleClose()
+        })
+      }
     },
   })
+
+  useEffect(() => {
+    if (!isEmpty(eCategory)) {
+      setIsEdit(true)
+      formik.setValues({
+        categoryCode: eCategory.category_code,
+        categoryName: eCategory.category_name,
+      })
+    }
+  }, [eCategory])
 
   const handleSubmit = () => {
     formik.handleSubmit()
   }
 
+  const handleClose = () => {
+    setIsEdit(false)
+    formik.resetForm()
+    onClose()
+  }
+
   return (
-    <DialogTemplate open={open} onClose={onClose} onSubmit={handleSubmit} title="Create">
+    <DialogTemplate open={open} onClose={handleClose} onSubmit={handleSubmit} title={isEdit ? 'Edit' : 'Create'}>
       <Grid container spacing={1}>
         <Grid item>
           <Grid container direction="column" spacing={1}>
@@ -41,6 +74,7 @@ const Form = (props) => {
               <Grid container spacing={1}>
                 <Grid item>
                   <TextField
+                    disabled={isEdit}
                     id="categoryCode"
                     label="Code"
                     variant="outlined"

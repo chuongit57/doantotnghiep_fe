@@ -5,12 +5,14 @@ export const userSagaActions = {
 export const categorySagaActions = {
   ADD_CATEGORY: 'ADD_CATEGORY',
   LOAD_CATEGORIES: 'LOAD_CATEGORIES',
+  EDIT_CATEGORIES: 'EDIT_CATEGORIES',
   DELETE_CATEGORY: 'DELETE_CATEGORY',
 }
 
 export const productSagaActions = {
   ADD_PRODUCT: 'ADD_PRODUCT',
   LOAD_PRODUCTS: 'LOAD_PRODUCTS',
+  EDIT_PRODUCTS: 'EDIT_PRODUCTS',
   DELETE_PRODUCT: 'DELETE_PRODUCT',
 }
 

@@ -21,6 +21,13 @@ export const useOnAddAPICategory = () => {
   }, [])
 }
 
+export const useOnEditAPICategory = () => {
+  const dispatch = useDispatch()
+  return React.useCallback((data, callBack) => {
+    dispatch({type: categorySagaActions.EDIT_CATEGORIES, payload: {data, callBack}})
+  }, [])
+}
+
 export const useOnDeleteAPICategory = () => {
   const dispatch = useDispatch()
   return React.useCallback((data) => {

@@ -18,6 +18,7 @@ import Template from '../components/Template'
 import {useCategories, useOnDeleteAPICategory, useOnLoadAPICategories} from '../../../hooks/category'
 import {confirmAlert} from 'react-confirm-alert' // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import {useOnLoadECategory} from '../../../hooks/editCategory'
 
 const columns = [
   {id: 'category_code', label: 'Code', minWidth: 170},
@@ -40,6 +41,7 @@ const Category = () => {
   const [openForm, setOpenForm] = React.useState(false)
   const onLoadAPICategories = useOnLoadAPICategories()
   const onDeleteAPICategory = useOnDeleteAPICategory()
+  const onLoadECategory = useOnLoadECategory()
   const categories = useCategories()
 
   useEffect(() => {
@@ -76,6 +78,11 @@ const Category = () => {
         },
       ],
     })
+  }
+
+  const handleEdit = (data) => {
+    onLoadECategory(data)
+    handleChangeStatusForm(true)
   }
 
   return (
@@ -120,11 +127,11 @@ const Category = () => {
                         })}
                         <TableCell align="right">
                           <Grid container>
-                            {/* <Grid item>
-                              <IconButton aria-label="edit">
+                            <Grid item>
+                              <IconButton aria-label="edit" onClick={handleEdit.bind(this, row)}>
                                 <EditIcon />
                               </IconButton>
-                            </Grid> */}
+                            </Grid>
                             <Grid item>
                               <IconButton aria-label="delete" onClick={handleDelete.bind(this, row)}>
                                 <DeleteIcon />

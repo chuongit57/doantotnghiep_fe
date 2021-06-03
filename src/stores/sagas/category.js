@@ -16,6 +16,18 @@ function* addCategorySaga(action) {
   }
 }
 
+function* updateCategorySaga(action) {
+  try {
+    yield put(start())
+    yield call(Api.put, 'api/admin/category', action.payload.data)
+    yield call(loadCategorySaga)
+    yield put(success())
+    action.payload.callBack && action.payload.callBack()
+  } catch (e) {
+    yield put(fail())
+  }
+}
+
 function* loadCategorySaga() {
   try {
     yield put(start())
@@ -41,6 +53,7 @@ function* deleteCategorySaga(action) {
 function* categorySaga() {
   yield takeEvery(categorySagaActions.ADD_CATEGORY, addCategorySaga)
   yield takeEvery(categorySagaActions.LOAD_CATEGORIES, loadCategorySaga)
+  yield takeEvery(categorySagaActions.EDIT_CATEGORIES, updateCategorySaga)
   yield takeEvery(categorySagaActions.DELETE_CATEGORY, deleteCategorySaga)
 }
 
